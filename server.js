@@ -1,14 +1,21 @@
 const express = require('express')
 const app = express()
 const expressLayouts = require('express-ejs-layouts')
+const bodyParser = require('body-parser') //請改用內建 body-parser，不需另外安裝載入
 
 const indexRouter = require('./routes/index')
+const authorRouter = require('./routes/authors')
+
 
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/views')
 app.set('layout', 'layouts/layout')
 app.use(expressLayouts)
 app.use(express.static('public'))
+
+//設定每筆請求，透過 body-parser 前置處理，透過 methodOverride(路由覆蓋機制) 前置處理
+//將 request 導入 Router路由器
+app.use(express.urlencoded({ limit: '10mb', extended: false }))
 
 const mongoose = require('mongoose') //載入mongoose
 
@@ -25,5 +32,6 @@ db.once('open', () => {
 })
 
 app.use('/', indexRouter)
+app.use('/authors', authorRouter)
 
 app.listen(process.env.PORT || 3000) //如果在 Heroku 環境使用 process.env.PORT，若在本地環境使用3000
