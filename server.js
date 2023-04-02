@@ -5,7 +5,7 @@ const bodyParser = require('body-parser') //請改用內建 body-parser，不需
 
 const indexRouter = require('./routes/index')
 const authorRouter = require('./routes/authors')
-
+const bookRouter = require('./routes/books')
 
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/views')
@@ -33,5 +33,6 @@ db.once('open', () => {
 
 app.use('/', indexRouter)
 app.use('/authors', authorRouter)
+app.use('/books', bookRouter)
 
 app.listen(process.env.PORT || 3000) //如果在 Heroku 環境使用 process.env.PORT，若在本地環境使用3000
